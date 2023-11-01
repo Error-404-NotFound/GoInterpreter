@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
+        runPrompt();
     }
 
     private static void runPrompt() throws IOException {
