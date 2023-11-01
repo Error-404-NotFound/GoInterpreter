@@ -33,6 +33,20 @@ public class Scanner {
         return source.charAt(current-1);
     }
 
+    private boolean isAtEnd() {
+        return current>=source.length();
+    }
+
+    private char peek() {
+        if(isAtEnd()) return '\0';
+        return source.charAt(current);
+    }
+
+    private char peekNext() {
+        if(current+1>=source.length()) return '\0';
+        return source.charAt(current+1);
+    }
+
     private void addToken(TokenType tokenType, Object literal) {
         String token = source.substring(start,current);
         tokens.add(new Token(tokenType,token,literal,line));
