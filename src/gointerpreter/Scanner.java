@@ -1,6 +1,7 @@
 package gointerpreter;
 
 import java.lang.String;
+import java.lang.Object;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,5 +26,20 @@ public class Scanner {
 
     private boolean isAlphaNumeric(char c) {
         return isDigit(c) || isAlphabet(c);
+    }
+
+    private char advance() {
+        current++;
+        return source.charAt(current-1);
+    }
+
+    private void addToken(TokenType tokenType, Object literal) {
+        String token = source.substring(start,current);
+        tokens.add(new Token(tokenType,token,literal,line));
+    }
+
+    // Polymorphism
+    private void addToken(TokenType tokenType) {
+        addToken(tokenType,null);
     }
 }
