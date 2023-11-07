@@ -37,6 +37,11 @@ public class Scanner {
         keywords.put("true",   TRUE);
         keywords.put("var",    VAR);
         keywords.put("while",  WHILE);
+        keywords.put("package",PACKAGE);
+        keywords.put("import", IMPORT);
+        keywords.put("main",   MAIN);
+        keywords.put("func",   FUNC);
+        keywords.put("fmt",    FMT);
     }
 
     //Constructor for Scanner Class
