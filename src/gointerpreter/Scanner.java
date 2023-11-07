@@ -4,7 +4,11 @@ import java.lang.String;
 import java.lang.Object;
 import java.lang.Double;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
+
+import static gointerpreter.TokenType.*;
 
 public class Scanner {
     private final String source;
@@ -12,6 +16,28 @@ public class Scanner {
     private int start = 0;
     private int pos_index = 0;
     private int line = 1;
+
+    private static final Map<String, TokenType> keywords;
+
+    static {
+        keywords = new HashMap<>();
+        keywords.put("and",    AND);
+        keywords.put("class",  CLASS);
+        keywords.put("else",   ELSE);
+        keywords.put("false",  FALSE);
+        keywords.put("for",    FOR);
+        keywords.put("fun",    FUN);
+        keywords.put("if",     IF);
+        keywords.put("nil",    NIL);
+        keywords.put("or",     OR);
+        keywords.put("print",  PRINT);
+        keywords.put("return", RETURN);
+        keywords.put("super",  SUPER);
+        keywords.put("this",   THIS);
+        keywords.put("true",   TRUE);
+        keywords.put("var",    VAR);
+        keywords.put("while",  WHILE);
+    }
 
     //Constructor for Scanner Class
     public Scanner(String source) {
@@ -39,9 +65,45 @@ public class Scanner {
             case '-':addToken(TokenType.MINUS);break;
             case '+':addToken(TokenType.PLUS);break;
             case ';':addToken(TokenType.SEMICOLON);break;
-            case '/':addToken(TokenType.SLASH);break;
             case '*':addToken(TokenType.STAR);break;
+            case '!':addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG); break;
+            case '=':addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL); break;
+            case '<':addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS); break;
+            case '>':addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER); break;
+            case '/':
+                if (match('/')) {
+                    // A comment goes until the end of the line.
+                    while (peek() != '\n' && !isAtEnd()) advance();
+                } else if (match('*')) {
+                    while (peek() != '*' && peekNext() != '/' && !isAtEnd()) {
+                        if (peek() == '\n') line++;
+                        advance();
+                    }
+                    if (isAtEnd()) {
+                        System.out.println("Error: Unterminated Comment");
+                        return;
+                    }
+                    advance();
+                    advance();
+                } else {
+                    addToken(TokenType.SLASH);
+                }
+                break;
+            case ' ':
+            case '\r':
+            case '\t':
+                // Ignore whitespace.
+                break;
+            case '\n':line++;break;
             case '"':string();break;
+            default:
+                if (isDigit(c)) {
+                    number();
+                } else if (isAlphabet(c)) {
+                    identifier();
+                } else {
+                    System.out.println("Error: Unexpected Character");
+                }
         }
     }
 
@@ -62,12 +124,31 @@ public class Scanner {
 
     //String Literal
     private void string() {
+        while(peek()!='"' && !isAtEnd()) {
+            if (peek() == '\n') line++;
+            advance();
+        }
+        if(isAtEnd()) {
+            System.out.println("Error: Unterminated String");
+            return;
+        }
 
+        // to close the string by a quote
+        advance();
+
+        // removing the quotes from the string
+        addToken(TokenType.STRING,source.substring(start+1,pos_index-1));
     }
 
     //Identifier Literal
     private void identifier() {
-
+        while(isAlphabet(peek())) advance();
+        // to check if the identifier is a keyword
+        String text = source.substring(start,pos_index);
+        TokenType type = keywords.get(text);
+        // if it is not a keyword then it is an identifier
+        if(type==null) type=IDENTIFIER;
+        addToken(type);
     }
 
     //////////////////////////////////////////////////////////
@@ -109,6 +190,14 @@ public class Scanner {
     private char peekNext() {
         if(pos_index+1>=source.length()) return '\0';
         return source.charAt(pos_index+1);
+    }
+
+    private boolean match(char expected) {
+        if(isAtEnd()) return false;
+        // checks if the character at pos_index is equal to expected
+        if(source.charAt(pos_index)!=expected) return false;
+        pos_index++;
+        return true;
     }
 
     // Make a token and make it an object and add it to the tokens list and add literal associated to it
