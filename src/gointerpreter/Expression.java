@@ -21,16 +21,6 @@ abstract class Expression {
 //        R visitMapExpression(Map expression);
 //        R visitRangeExpression(Range expression);
 //        R visitYieldExpression(Yield expression);
-
-        // We can implement these later
-//        R visitFunctionExpression(Function expression);
-//        R visitArrayExpression(Array expression);
-//        R visitForExpression(For expression);
-//        R visitIfExpression(If expression);
-//        R visitWhileExpression(While expression);
-//        R visitBreakExpression(Break expression);
-//        R visitContinueExpression(Continue expression);
-//        R visitReturnExpression(Return expression);
     }
 
     static class Variable extends Expression {
