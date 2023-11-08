@@ -21,5 +21,13 @@ public class Parser {
         return statements;
     }
 
+    private Statement declaration() {
+        try {
+
+        } catch (ParseError error) {
+
+        }
+    }
+
 
 }

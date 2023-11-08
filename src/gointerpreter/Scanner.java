@@ -174,7 +174,8 @@ public class Scanner {
         return isDigit(c) || isAlphabet(c);
     }
 
-    //gives the char at the current position and increases the position index
+    // all the necessary methods for scanning process
+    // gives the char at the current position and increases the position index
     private char advance() {
         pos_index++;
         return source.charAt(pos_index-1);
