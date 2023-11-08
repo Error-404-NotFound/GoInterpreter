@@ -4,6 +4,8 @@ import java.util.List;
 
 abstract class Expression {
     interface Visitor<R> {
+
+        // all the necessary expression types are added here
         R visitVariableExpression(Variable expression);
         R visitAssignExpression(Assign expr);
         R visitBinaryExpression(Binary expression);
@@ -22,6 +24,8 @@ abstract class Expression {
 //        R visitRangeExpression(Range expression);
 //        R visitYieldExpression(Yield expression);
     }
+
+    // each expression type is added here as a subclass, they all implement the accept method, they all have a final field for each of their parameters, and they inherit the Statement class
 
     static class Variable extends Expression {
         Variable(Token name) {

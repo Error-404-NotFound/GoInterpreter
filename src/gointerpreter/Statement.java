@@ -4,6 +4,8 @@ import java.util.List;
 
 abstract class Statement {
     interface Visitor<R> {
+
+        // all the necessary statements to be implemented in the programming language
         R visitBlockStatement(Block statement);
         R visitFunctionStatement(Function statement);
         R visitExpressionStatement(ExpressionStmt statement);
@@ -57,6 +59,8 @@ abstract class Statement {
 //        R visitTypeInterfaceCastStatement(TypeInterfaceCast statement);
 
     }
+
+    // each statement is a subclass of Statement class, all of them have an accept method,  they all have a final field for each of their parameters, and they inherit the Statement class
 
     static class Block extends Statement {
         Block(List<Statement> statements) {
