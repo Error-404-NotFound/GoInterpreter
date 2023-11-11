@@ -29,6 +29,8 @@ abstract class Statement {
         R visitThrowStatement(Throw statement);
         R visitCatchStatement(Catch statement);
         R visitFinallyStatement(Finally statement);
+        R visitPackageStatement(Package statement);
+        R visitMainStatement(Main statement);
 
 ////////////////////////////////////////////////////////////////////////////////
 //        if required we can implement these Statements also                  //
@@ -368,6 +370,32 @@ abstract class Statement {
         }
 
         final Statement body;
+    }
+
+    static class Package extends Statement {
+        Package(Token name) {
+            this.name = name;
+        }
+
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitPackageStatement(this);
+        }
+
+        final Token name;
+    }
+
+    static class Main extends Statement {
+        Main(Token name, List<Statement> body) {
+            this.name = name;
+            this.body = body;
+        }
+
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitMainStatement(this);
+        }
+
+        final Token name;
+        final List<Statement> body;
     }
 
     abstract <R> R accept(Visitor<R> visitor);
