@@ -291,6 +291,9 @@ abstract class Statement {
     }
 
     static class Break extends Statement {
+        public Expression initializer;
+        public Object name;
+
         Break() {}
 
         <R> R accept(Visitor<R> visitor) {

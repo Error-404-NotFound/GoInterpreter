@@ -1,3 +1,4 @@
+
 package gointerpreter;
 
 import java.lang.Integer;
@@ -46,12 +47,17 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
     }
 
     public Void visitClassStatement(Statement.Class statement) {
+        //complete the function
+        //complete the function body
+
+
         return null;
     }
 
     public Void visitFunctionStatement(Statement.Function statement) {
-//        Function function = new Function(statement);
-        return null;
+         Function function = new Function();
+         environment.define(statement.name.lexeme, function);
+         return null;
     }
 
     public Void visitExpressionStatement(Statement.ExpressionStmt statement) {
@@ -110,58 +116,106 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
     ///////////////////////////////////////////////////////////////////////
 
     public Void visitBreakStatement(Statement.Break statement) {
+
+        Object value = null;
+           if (statement.initializer != null) {
+                value = evaluate(statement.initializer);
+            }
+            environment.define(statement.name.lexeme, value);
+
         return null;
+
+
+
     }
 
     public Void visitContinueStatement(Statement.Continue statement) {
+
+        //complete the function
+        //complete the function body
+
+        Object value = null;
+        if (statement.initializer != null) {
+            value = evaluate(statement.initializer);
+        }
+        environment.define(statement.name.lexeme, value);
+
+        return null;
+
+
+
         return null;
     }
 
     public Void visitDoStatement(Statement.Do statement) {
+
+
         return null;
     }
 
     public Void visitSwitchStatement(Statement.Switch statement) {
+
+
         return null;
     }
 
     public Void visitCaseStatement(Statement.Case statement) {
+        if (isTruth(evaluate(statement.condition))) {
+            Statement statement1 = new Statement.Case(Statement.Case.condition, body);
+        }
+
+        // else move to the new case statement
+
         return null;
     }
 
     public Void visitDefaultStatement(Statement.Default statement) {
+        //on encountering default statement, create a new environment and execute whatever is inside it
         return null;
     }
 
     public Void visitTryStatement(Statement.Try statement) {
+        //on encountering catch statement, create a new environment and execute the statements if the conditions inside try are true
+
         return null;
     }
 
     public Void visitCatchStatement(Statement.Catch statement) {
+        //on encountering catch statement, create a new environment and execute the statements if the conditions inside try are false
+
         return null;
     }
 
     public Void visitFinallyStatement(Statement.Finally statement) {
+        //on encountering finally statement, create a new environment and execute the statements inside
         return null;
     }
 
     public Void visitThrowStatement(Statement.Throw statement) {
+        // on encountering throw statement, create a new environment and execute it according to thegiven name of error class
         return null;
     }
 
     public Void visitImportStatement(Statement.Import statement) {
+        //on encountering import statement, create a new environment and execute the import function
+
         return null;
     }
 
     public Void visitPackageStatement(Statement.Package statement) {
+        //on encountering package statement, create a new environment and execute the package function
         return null;
     }
 
     public Void visitMainStatement(Statement.Main statement) {
+        //on encountering main function, create a new environment and execute the main function
+
         return null;
     }
 
     public Void visitWhileForDoStatement(Statement.WhileForDo statement) {
+        //on encountering while for do statement, create a new environment and execute the while for do function
+
         return null;
     }
 
@@ -243,7 +297,44 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
         return null;
     }
 
+    @Override
+    public Object visitCallExpression(Expression.Call expression) {
+        return null;
+    }
+
+    @Override
+    public Object visitGetExpression(Expression.Get expression) {
+        return null;
+    }
+
+    @Override
+    public Object visitGroupingExpression(Expression.Grouping expression) {
+
+        return null;
+    }
+
+    @Override
+    public Object visitLiteralExpression(Expression.Literal expression) {
+        return null;
+    }
+
     public Object visitLogicalExpression(Expression.Logical expression) {
+        return null;
+    }
+
+    @Override
+    public Object visitSetExpression(Expression.Set expression) {
+        return null;
+    }
+
+    @Override
+    public Object visitThisExpression(Expression.This expression) {
+
+        return null;
+    }
+
+    @Override
+    public Object visitSuperExpression(Expression.Super expression) {
         return null;
     }
 
