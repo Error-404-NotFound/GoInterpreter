@@ -1,3 +1,4 @@
+
 package gointerpreter;
 
 import java.lang.Integer;
@@ -203,6 +204,27 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
                 checkNumberOperand(expression.operator, right);
                 return +(double) right;
         }
+        return null;
+    }
+
+    @Override
+    public Object visitCallExpression(Expression.Call expression) {
+        return null;
+    }
+
+    @Override
+    public Object visitGetExpression(Expression.Get expression) {
+        return null;
+    }
+
+    @Override
+    public Object visitGroupingExpression(Expression.Grouping expression) {
+
+        return null;
+    }
+
+    @Override
+    public Object visitLiteralExpression(Expression.Literal expression) {
         return null;
     }
 
