@@ -9,7 +9,9 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
     final Environment globals = new Environment();
     private Environment environment = globals;
     private final Map<Expression, Integer> locals = new HashMap<>();
+
     Interpreter() {}
+
     void interpret(List<Statement> statements) {
         try {
             for (Statement statement : statements) {
@@ -24,7 +26,7 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
         statement.accept(this);
     }
 
-    private void executeBlock(List<Statement> statements, Environment environment) {
+    void executeBlock(List<Statement> statements, Environment environment) {
         Environment previous = this.environment;
         try {
             this.environment = environment;
@@ -40,17 +42,42 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
         return expression.accept(this);
     }
 
+    void resolve(Expression expression, int depth) {
+        locals.put(expression, depth);
+    }
+
     public Void visitBlockStatement(Statement.Block statement) {
         executeBlock(statement.statements, new Environment(environment));
         return null;
     }
 
     public Void visitClassStatement(Statement.Class statement) {
+        environment.define(statement.name.lexeme, null);
+        Object superclass = null;
+        if (statement.superclass != null) {
+            superclass = evaluate(statement.superclass);
+            if (!(superclass instanceof Class)) {
+                throw new RuntimeError(statement.name, "Superclass must be a class.");
+            }
+            environment = new Environment(environment);
+            environment.define("super", superclass);
+        }
+        Map<String, Function> methods = new HashMap<>();
+        for (Statement.Function method : statement.methods) {
+            Function function = new Function(method, environment, method.name.lexeme.equals("init"));
+            methods.put(method.name.lexeme, function);
+        }
+        Class klass = new Class(statement.name.lexeme, (Class) superclass, methods);
+        if (superclass != null) {
+            environment = environment.enclosing;
+        }
+        environment.assign(statement.name, klass);
         return null;
     }
 
     public Void visitFunctionStatement(Statement.Function statement) {
-//        Function function = new Function(statement);
+        Function function = new Function(statement, environment, false);
+        environment.define(statement.name.lexeme, function);
         return null;
     }
 
@@ -107,75 +134,11 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
         return null;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-
-    public Void visitBreakStatement(Statement.Break statement) {
-        return null;
-    }
-
-    public Void visitContinueStatement(Statement.Continue statement) {
-        return null;
-    }
-
-    public Void visitDoStatement(Statement.Do statement) {
-        return null;
-    }
-
-    public Void visitSwitchStatement(Statement.Switch statement) {
-        return null;
-    }
-
-    public Void visitCaseStatement(Statement.Case statement) {
-        return null;
-    }
-
-    public Void visitDefaultStatement(Statement.Default statement) {
-        return null;
-    }
-
-    public Void visitTryStatement(Statement.Try statement) {
-        return null;
-    }
-
-    public Void visitCatchStatement(Statement.Catch statement) {
-        return null;
-    }
-
-    public Void visitFinallyStatement(Statement.Finally statement) {
-        return null;
-    }
-
-    public Void visitThrowStatement(Statement.Throw statement) {
-        return null;
-    }
-
-    public Void visitImportStatement(Statement.Import statement) {
-        return null;
-    }
-
-    public Void visitPackageStatement(Statement.Package statement) {
-        return null;
-    }
-
-    public Void visitMainStatement(Statement.Main statement) {
-        return null;
-    }
-
-    public Void visitWhileForDoStatement(Statement.WhileForDo statement) {
-        return null;
-    }
-
-    public Void visitElseIfStatement(Statement.ElseIf statement) {
-        return null;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
 
     public Object visitVariableExpression(Expression.Variable expression) {
-        return null;
+        return lookUpVariable(expression.name, expression);
     }
-
-    /////////////////////////////////////////////////////////////////////////////
 
     public Object visitAssignExpression(Expression.Assign expression) {
         Object value = evaluate(expression.value);
@@ -244,7 +207,70 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
     }
 
     public Object visitLogicalExpression(Expression.Logical expression) {
-        return null;
+        Object left = evaluate(expression.left);
+        if (expression.operator.tokenType == TokenType.OR) {
+            if (isTruth(left)) return left;
+        } else {
+            if (!isTruth(left)) return left;
+        }
+        return evaluate(expression.right);
+    }
+
+    public Object visitCallExpression(Expression.Call expression) {
+        Object call = evaluate(expression.call);
+        List<Object> arguments = new java.util.ArrayList<>();
+        for (Expression argument : expression.arguments) {
+            arguments.add(evaluate(argument));
+        }
+        if (!(call instanceof Callable)) {
+            throw new RuntimeError(expression.name, "Can only call functions and classes.");
+        }
+        Callable function = (Callable) call;
+        if (arguments.size() != function.arity()) {
+            throw new RuntimeError(expression.name, "Expected " + function.arity() + " arguments but got " + arguments.size() + ".");
+        }
+        return function.call(this, arguments);
+    }
+
+    public Object visitGetExpression(Expression.Get expression) {
+        Object object = evaluate(expression.object);
+        if (object instanceof Instance) {
+            return ((Instance) object).get(expression.name);
+        }
+        throw new RuntimeError(expression.name, "Only instances have properties.");
+    }
+
+    public Object visitSetExpression(Expression.Set expression) {
+        Object object = evaluate(expression.object);
+        if (!(object instanceof Instance)) {
+            throw new RuntimeError(expression.name, "Only instances have fields.");
+        }
+        Object value = evaluate(expression.value);
+        ((Instance) object).set(expression.name, value);
+        return value;
+    }
+
+    public Object visitGroupingExpression(Expression.Grouping expression) {
+        return evaluate(expression.expression);
+    }
+
+    public Object visitLiteralExpression(Expression.Literal expression) {
+        return expression.literal;
+    }
+
+    public Object visitThisExpression(Expression.This expression) {
+        return lookUpVariable(expression.keyword, expression);
+    }
+
+    public Object visitSuperExpression(Expression.Super expression) {
+        int distance = locals.get(expression);
+        Class superclass = (Class) environment.getAt(distance, "super");
+        Instance object = (Instance) environment.getAt(distance - 1, "this");
+        Function method = superclass.findMethod(object, expression.method.lexeme);
+        if (method == null) {
+            throw new RuntimeError(expression.method, "Undefined property '" + expression.method.lexeme + "'.");
+        }
+        return method.bind(object);
     }
 
     private void checkNumberOperand(Token operator, Object operand) {
@@ -255,6 +281,15 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
     private void checkNumberOperand(Token operator, Object left, Object right) {
         if (left instanceof Double && right instanceof Double) return;
         throw new RuntimeError(operator, "Operands must be numbers.");
+    }
+
+    private Object lookUpVariable(Token name, Expression expr) {
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            return environment.getAt(distance, name.lexeme);
+        } else {
+            return globals.get(name);
+        }
     }
 
     private boolean isTruth(Object object) {

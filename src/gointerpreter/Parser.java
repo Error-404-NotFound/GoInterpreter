@@ -25,11 +25,8 @@ public class Parser {
 
     private Statement declaration() {
         try {
-            if(match(TokenType.PACKAGE)) return packageDeclaration();
-//            if(match(TokenType.IMPORT)) return importDeclaration();
             if(match(TokenType.VAR)) return varDeclaration();
             if(match(TokenType.FUNC)) return function("function");
-            if(match(TokenType.MAIN)) return mainDeclaration();
             if(match(TokenType.CLASS)) return classDeclaration();
 
             return statement();
@@ -37,27 +34,6 @@ public class Parser {
             synchronize();
             return null;
         }
-    }
-
-    private Statement packageDeclaration() {
-        Token name = consume(TokenType.IDENTIFIER, "Expect package name.");
-        consume(TokenType.SEMICOLON, "Expect ';' after package name.");
-        return new Statement.Package(name);
-    }
-
-//    private Statement importDeclaration() {
-//        Token name = consume(TokenType.IDENTIFIER, "Expect import name.");
-//        consume(TokenType.SEMICOLON, "Expect ';' after import name.");
-//        return new Statement.Import(name);
-//    }
-
-    private Statement mainDeclaration() {
-        Token name = consume(TokenType.IDENTIFIER, "Expect main name.");
-        consume(TokenType.LEFT_PAREN, "Expect '(' after main name.");
-        consume(TokenType.RIGHT_PAREN, "Expect ')' after main name.");
-        consume(TokenType.LEFT_BRACE, "Expect '{' after main name.");
-        List<Statement> body = block();
-        return new Statement.Main(name, body);
     }
 
     private Statement.Function function(String kind) {
