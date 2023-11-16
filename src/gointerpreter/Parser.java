@@ -28,6 +28,7 @@ public class Parser {
             if(match(TokenType.VAR)) return varDeclaration();
             if(match(TokenType.FUNC)) return function("function");
             if(match(TokenType.CLASS)) return classDeclaration();
+            if(match(TokenType.INITIALIZER)) return initializerDeclaration();
 
             return statement();
         } catch (ParseError error) {
@@ -85,8 +86,19 @@ public class Parser {
         if(match(TokenType.EQUAL)) {
             initializer = expression();
         }
-        consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+//        consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
         return new Statement.Var(name, initializer);
+    }
+
+    private Statement initializerDeclaration() {
+        Token name = consume(TokenType.IDENTIFIER, "Expect variable name.");
+        Expression initializer=null;
+        consume(TokenType.COLON, "Expect ':' after declaration of variable.");
+        if(match(TokenType.EQUAL)) {
+            initializer = expression();
+        }
+//        consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+        return new Statement.Initializer(name, initializer);
     }
 
     private Statement statement() {
@@ -102,13 +114,13 @@ public class Parser {
 
     private Statement expressionStatement() {
         Expression expression = expression();
-        consume(TokenType.SEMICOLON, "Expect ';' after expression.");
+//        consume(TokenType.SEMICOLON, "Expect ';' after expression.");
         return new Statement.ExpressionStmt(expression);
     }
 
     private Statement printStatement() {
         Expression value = expression();
-        consume(TokenType.SEMICOLON, "Expect ';' after value.");
+//        consume(TokenType.SEMICOLON, "Expect ';' after value.");
         return new Statement.Print(value);
     }
 
@@ -118,14 +130,14 @@ public class Parser {
         if(!check(TokenType.SEMICOLON)) {
             value = expression();
         }
-        consume(TokenType.SEMICOLON, "Expect ';' after return value.");
+//        consume(TokenType.SEMICOLON, "Expect ';' after return value.");
         return new Statement.Return(keyword, value);
     }
 
     private Statement ifStatement() {
-        consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+//        consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
         Expression condition = expression();
-        consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
+//        consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
         consume(TokenType.LEFT_BRACE, "Expect '{' before 'then block'.");
         Statement thenBranch = statement();
         consume(TokenType.RIGHT_BRACE, "Expect '}' after 'then block'.");
@@ -139,53 +151,51 @@ public class Parser {
     }
 
     private Statement forStatement() {
-        consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
+//        consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
+
         Statement initializer;
-        if(match(TokenType.SEMICOLON)) {
+        if (match(TokenType.SEMICOLON)) {
             initializer = null;
-        } else if(match(TokenType.VAR)) {
+        } else if (match(TokenType.VAR)) {
             initializer = varDeclaration();
         } else {
             initializer = expressionStatement();
         }
+        consume(TokenType.SEMICOLON, "Expect ';' after loop condition.");
         Expression condition = null;
-        if(!check(TokenType.SEMICOLON)) {
+        if (!check(TokenType.SEMICOLON)) {
             condition = expression();
         }
         consume(TokenType.SEMICOLON, "Expect ';' after loop condition.");
+
         Expression increment = null;
-        if(!check(TokenType.RIGHT_PAREN)) {
+        if (!check(TokenType.RIGHT_PAREN)) {
             increment = expression();
         }
-        consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.");
-        consume(TokenType.LEFT_BRACE, "Expect '{' before 'body'.");
+//        consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.");
+
         Statement body = statement();
-        if(increment != null) {
-            body = new Statement.Block(
-                Arrays.asList(
+
+        if (increment != null) {
+            body = new Statement.Block(Arrays.asList(
                     body,
-                    new Statement.ExpressionStmt(increment)
-                )
-            );
+                    new Statement.ExpressionStmt(increment)));
         }
-        if(condition == null) condition = new Expression.Literal(true);
+
+        if (condition == null) condition = new Expression.Literal(true);
         body = new Statement.While(condition, body);
-        if(initializer != null) {
-            body = new Statement.Block(
-                Arrays.asList(
-                    initializer,
-                    body
-                )
-            );
+
+        if (initializer != null) {
+            body = new Statement.Block(Arrays.asList(initializer, body));
         }
-        consume(TokenType.LEFT_BRACE, "Expect '}' after 'body'.");
+
         return body;
     }
 
     private Statement whileStatement() {
-        consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
+//        consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
         Expression condition = expression();
-        consume(TokenType.RIGHT_PAREN, "Expect ')' after 'condition'.");
+//        consume(TokenType.RIGHT_PAREN, "Expect ')' after 'condition'.");
         Statement body = statement();
         return new Statement.While(condition, body);
     }
