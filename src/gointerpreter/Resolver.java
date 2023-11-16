@@ -165,6 +165,13 @@ public class Resolver implements Expression.Visitor<Void>, Statement.Visitor<Voi
         return null;
     }
 
+    public Void visitInitializerStatement(Statement.Initializer statement) {
+        if (statement.initializer != null) {
+            resolve(statement.initializer);
+        }
+        return null;
+    }
+
     public Void visitWhileStatement(Statement.While statement) {
         resolve(statement.condition);
         resolve(statement.body);
