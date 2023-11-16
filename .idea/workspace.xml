@@ -5,40 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3adbaeea-30b4-4edc-8933-0bf8e5ed9bd6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../100_Programming_Challenge/Challenge_100/Challenge_100.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ATM_v1/ATM_v1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ATM_v1/ATM_v1/ATM_v1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gointerpreter/Callable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gointerpreter/Class.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gointerpreter/Instance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gointerpreter/Resolver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab_4_25082023/CS22B001/CS22B001.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab_4_25082023/CS22B001/CS22B001/Game.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab_4_25082023/CS22B028/CS22B028.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../OpenEndedQuestions/Three/CS22B028/Question_1/Question_1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../OpenEndedQuestions/Three/CS22B028/Question_2/Question_2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../OpenEndedQuestions/Three/CS22B028/Question_3/Question_3.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../OpenEndedQuestions/Two/CS22B028/Question_1/Question_1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../OpenEndedQuestions/Two/CS22B028/Question_2/Question_2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../OpenEndedQuestions/casestudy1/CaseStudy1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../OpenEndedQuestions/casestudy1/untitled/untitled.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Team8_v1.0/Team8_v1.0.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Tree Walk Tutorial-20231031T143351Z-001/Tree Walk Tutorial-20231031T143351Z-001.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Tree Walk Tutorial-20231031T143351Z-001/Tree Walk Tutorial/Tree Walk Tutorial.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Tree Walk Tutorial-20231031T143351Z-001/Tree Walk Tutorial/src/com/craftinginterpreters/tool/GenerateAst.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../casestudy1/casestudy1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../casestudy1/casestudy1/CaseStudy1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../j/j.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../untitled/untitled.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../untitled1/untitled1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gointerpreter/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gointerpreter/Expression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gointerpreter/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gointerpreter/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gointerpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gointerpreter/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gointerpreter/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gointerpreter/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gointerpreter/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gointerpreter/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gointerpreter/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gointerpreter/Scanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gointerpreter/Statement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gointerpreter/Statement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,24 +35,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;D:/Study/Semester3/Programming Methodology/Interpreter/src/Main.java&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/Interpreter",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "D:/Study/Semester3/Programming Methodology/Interpreter/src/Main.java",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Interpreter" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Interpreter" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -102,7 +85,9 @@
       <workItem from="1699690727016" duration="3577000" />
       <workItem from="1699696026106" duration="254000" />
       <workItem from="1699696292956" duration="5929000" />
-      <workItem from="1700076879714" duration="10726000" />
+      <workItem from="1700076879714" duration="11197000" />
+      <workItem from="1700122029801" duration="29000" />
+      <workItem from="1700124738422" duration="32000" />
     </task>
     <servers />
   </component>
