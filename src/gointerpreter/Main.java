@@ -61,7 +61,8 @@ public class Main {
     }
 
     static void report(int line, String where, String message) {
-        System.err.println("[line "+line+"] Error"+where+": "+message);
+        System.err.print("[line "+line+"] Error"+where+": "+message);
+//        System.out.print("> ");
         hadError = true;
     }
 
@@ -70,12 +71,13 @@ public class Main {
         if (token.tokenType == TokenType.EOF) {
             report(token.line, " at end", message);
         } else {
-            report(token.line, " at " + token.lexeme + "'", message);
+            report(token.line, " at " + token.lexeme + ":", message);
         }
     }
 
     static void runtimeError(RuntimeError error) {
-        System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+        System.err.print(error.getMessage() + "\n[line " + error.token.line + "]");
+//        System.out.print("> ");
         hadRuntimeError = true;
     }
 }

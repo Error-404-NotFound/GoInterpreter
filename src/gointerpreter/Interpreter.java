@@ -116,6 +116,15 @@ public class Interpreter implements Expression.Visitor<Object>, Statement.Visito
         return null;
     }
 
+    public Void visitInitializerStatement(Statement.Initializer statement) {
+        Object value = null;
+        if (statement.initializer != null) {
+            value = evaluate(statement.initializer);
+        }
+        environment.define(statement.name.lexeme, value);
+        return null;
+    }
+
     public Void visitForStatement(Statement.For statement) {
         if (statement.initializer != null) {
             execute(statement.initializer);

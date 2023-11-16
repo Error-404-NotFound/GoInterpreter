@@ -14,12 +14,12 @@ abstract class Statement {
         R visitPrintStatement(Print statement);
         R visitReturnStatement(Return statement);
         R visitVarStatement(Var statement);
+        R visitInitializerStatement(Initializer statement);
         R visitForStatement(For statement);
         R visitWhileStatement(While statement);
     }
 
     // each statement is a subclass of Statement class, all of them have an accept method,  they all have a final field for each of their parameters, and they inherit the Statement class
-
     static class Block extends Statement {
         Block(List<Statement> statements) {
             this.statements = statements;
@@ -126,6 +126,20 @@ abstract class Statement {
 
         <R> R accept(Visitor<R> visitor) {
             return visitor.visitVarStatement(this);
+        }
+
+        final Token name;
+        final Expression initializer;
+    }
+
+    static class Initializer extends Statement {
+        Initializer(Token name, Expression initializer) {
+            this.name = name;
+            this.initializer = initializer;
+        }
+
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitInitializerStatement(this);
         }
 
         final Token name;
