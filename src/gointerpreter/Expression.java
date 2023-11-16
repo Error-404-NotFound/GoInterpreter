@@ -18,11 +18,6 @@ abstract class Expression {
         R visitSetExpression(Set expression);
         R visitThisExpression(This expression);
         R visitSuperExpression(Super expression);
-//        R visitIndexExpression(Index expression);
-//        R visitSliceExpression(Slice expression);
-//        R visitMapExpression(Map expression);
-//        R visitRangeExpression(Range expression);
-//        R visitYieldExpression(Yield expression);
     }
 
     // each expression type is added here as a subclass, they all implement the accept method, they all have a final field for each of their parameters, and they inherit the Statement class

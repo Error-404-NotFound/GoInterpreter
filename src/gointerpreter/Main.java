@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Main {
+    private static final Interpreter interpreter = new Interpreter();
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
 
@@ -45,9 +46,14 @@ public class Main {
     private static void run(String source) throws IOException {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
-        for(Token token: tokens) {
-            System.out.println(token);
-        }
+        Parser parser = new Parser(tokens);
+        List<Statement> statements = parser.parse();
+        // to stop is there is a syntax error
+        if(hadError) return;
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(statements);
+        if(hadError) return;
+        interpreter.interpret(statements);
     }
 
     static void error(int line, String message) {
