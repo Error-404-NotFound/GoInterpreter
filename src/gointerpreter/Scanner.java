@@ -21,7 +21,7 @@ public class Scanner {
 
     static {
         keywords = new HashMap<>();
-        keywords.put("and",    AND);
+        keywords.put("&&",    AND);
         keywords.put("class",  CLASS);
         keywords.put("else",   ELSE);
         keywords.put("false",  FALSE);
@@ -29,7 +29,7 @@ public class Scanner {
         keywords.put("fun",    FUN);
         keywords.put("if",     IF);
         keywords.put("nil",    NIL);
-        keywords.put("or",     OR);
+        keywords.put("||",     OR);
         keywords.put("Println",  PRINT);
         keywords.put("return", RETURN);
         keywords.put("super",  SUPER);
@@ -39,7 +39,7 @@ public class Scanner {
         keywords.put("while",  WHILE);
         keywords.put("package",PACKAGE);
         keywords.put("import", IMPORT);
-        keywords.put("main",   MAIN);
+        keywords.put("main()",   MAIN);
         keywords.put("func",   FUNC);
         keywords.put("fmt",    FMT);
     }
@@ -70,13 +70,12 @@ public class Scanner {
             case '-':addToken(TokenType.MINUS);break;
             case '+':addToken(TokenType.PLUS);break;
             case ';':addToken(TokenType.SEMICOLON);break;
-            case ':':addToken(TokenType.COLON);break;
-//            case ':=':addToken(TokenType.INITIALIZER);break;
             case '*':addToken(TokenType.STAR);break;
             case '!':addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG); break;
             case '=':addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL); break;
             case '<':addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS); break;
             case '>':addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER); break;
+            case ':':addToken(match('=') ? TokenType.COLON_EQUAL : TokenType.COLON); break;
             case '/':
                 if (match('/')) {
                     // A comment goes until the end of the line.
@@ -152,6 +151,17 @@ public class Scanner {
         while(isAlphabet(peek())) advance();
         // to check if the identifier is a keyword
         String text = source.substring(start,pos_index);
+        if(text.equals("main")==true) {
+            if(match('(')){
+                if(match(')')) {
+
+                }
+                else {
+                    Main.error(line, "main() is incomplete");
+                }
+            }
+        }
+        text = source.substring(start,pos_index);
         TokenType type = keywords.get(text);
         // if it is not a keyword then it is an identifier
         if(type==null) type=IDENTIFIER;
@@ -204,6 +214,14 @@ public class Scanner {
         if(isAtEnd()) return false;
         // checks if the character at pos_index is equal to expected
         if(source.charAt(pos_index)!=expected) return false;
+        pos_index++;
+        return true;
+    }
+
+    private boolean matchNext(char expected) {
+        if(isAtEnd()) return false;
+        // checks if the character at pos_index is equal to expected
+        if(source.charAt(pos_index+1)!=expected) return false;
         pos_index++;
         return true;
     }

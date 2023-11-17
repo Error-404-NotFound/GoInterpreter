@@ -61,7 +61,7 @@ public class Main {
     }
 
     static void report(int line, String where, String message) {
-        System.err.print("[line "+line+"] Error"+where+": "+message);
+        System.err.println("[line "+line+"] Error"+where+": "+message);
 //        System.out.print("> ");
         hadError = true;
     }
@@ -76,7 +76,7 @@ public class Main {
     }
 
     static void runtimeError(RuntimeError error) {
-        System.err.print(error.getMessage() + "\n[line " + error.token.line + "]");
+        System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
 //        System.out.print("> ");
         hadRuntimeError = true;
     }

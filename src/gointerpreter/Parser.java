@@ -6,13 +6,73 @@ import java.util.List;
 //import static gointerpreter.TokenType.*;
 
 public class Parser {
+    boolean isMain=false;
+    boolean isImport=false;
+    int pos_main=0;
     private static class ParseError extends RuntimeException {}
 
     private final List<Token> tokens;
     private int current = 0;
 
-    public Parser(List<Token> tokens) {
+    Parser(List<Token> tokens) {
         this.tokens = tokens;
+        if(this.tokens.size()>=1 && this.tokens.get(0).tokenType==TokenType.IMPORT) {
+            if(this.tokens.size()>=2 && this.tokens.get(1).tokenType==TokenType.STRING && this.tokens.get(1).literal.equals("fmt")) {
+                isImport=true;
+                this.tokens.remove(0);
+                this.tokens.remove(0);
+            }
+            else {
+                Main.error(this.tokens.get(0), "Expected import \"fmt\"");
+                this.tokens.remove(0);
+                this.tokens.remove(0);
+            }
+        }
+        for(int i=0;i<this.tokens.size();i++) {
+            if(this.tokens.get(i).tokenType==TokenType.FUNC) {
+                if(i+1 < this.tokens.size() && this.tokens.get(i+1).tokenType==TokenType.MAIN) {
+                    // if(i+2 < this.tokens.size() && this.tokens.get(i+2).tokenType==TokenType.LEFT_PAREN) {
+                        // if(i+3 < this.tokens.size() && this.tokens.get(i+3).tokenType==TokenType.RIGHT_PAREN) {
+                            if(i+2 < this.tokens.size() && this.tokens.get(i+2).tokenType==TokenType.LEFT_BRACE) {
+                                if(this.tokens.get(this.tokens.size()-2).tokenType==TokenType.RIGHT_BRACE && this.tokens.get(this.tokens.size()-1).tokenType==TokenType.EOF) {
+                                    isMain=true;
+                                    this.tokens.remove(i+2);
+                                    this.tokens.remove(i+1);
+                                    this.tokens.remove(i);
+                                    this.tokens.remove(this.tokens.size()-2);
+                                    pos_main=i;
+                                }
+                                else {
+                                    Main.error(this.tokens.get(tokens.size()-2), "Expected \"}\"");
+                                    this.tokens.remove(i+2);
+                                    this.tokens.remove(i+1);
+                                    this.tokens.remove(i);
+                                    break;
+                                }
+                            }
+                            else {
+                                Main.error(this.tokens.get(i+2), "Expected \"{\"");
+                                this.tokens.remove(i+2);
+                                this.tokens.remove(i+1);
+                                this.tokens.remove(i);
+                                break;
+                            }
+                        // }
+                        // else {
+                        //     Main.error(this.tokens.get(i+2), "Expected \")\"");
+                        //     this.tokens.remove(i+1);
+                        //     this.tokens.remove(i);
+                        //     break;
+                        // }
+                    // }
+                    // else {
+                    //     Main.error(this.tokens.get(i + 1), "Expected \"(\"");
+                    //     this.tokens.remove(i);
+                    //     break;
+                    // }
+                }
+            }
+        }
     }
 
     List<Statement> parse() {
@@ -26,11 +86,17 @@ public class Parser {
     private Statement declaration() {
         try {
             if(match(TokenType.VAR)) return varDeclaration();
-            if(match(TokenType.FUNC)) return function("function");
+//            if(match(TokenType.FUNC)) return function("function");
             if(match(TokenType.CLASS)) return classDeclaration();
-            if(match(TokenType.INITIALIZER)) return initializerDeclaration();
-
-            return statement();
+            if(match(TokenType.IDENTIFIER)) return initializerDeclaration();
+            if(isMain && current>=pos_main) {
+                return statement();
+            }
+            else {
+                Main.error(peek(), "Expected \"func\" or \"var\" or \"class\" or \"identifier\" Cannot code outside the main function.");
+                synchronize();
+                return null;
+            }
         } catch (ParseError error) {
             synchronize();
             return null;
@@ -93,8 +159,7 @@ public class Parser {
     private Statement initializerDeclaration() {
         Token name = consume(TokenType.IDENTIFIER, "Expect variable name.");
         Expression initializer=null;
-        consume(TokenType.COLON, "Expect ':' after declaration of variable.");
-        if(match(TokenType.EQUAL)) {
+        if(match(TokenType.COLON_EQUAL)) {
             initializer = expression();
         }
 //        consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
@@ -102,7 +167,14 @@ public class Parser {
     }
 
     private Statement statement() {
-        if(match(TokenType.PRINT)) return printStatement();
+        if(match(TokenType.FMT)) {
+            consume(TokenType.DOT, "Expect '.' after 'fmt'.");
+            if(match(TokenType.PRINT)) return printStatement();
+            else {
+                Main.error(peek(), "Expected \"Println\"");
+                return null;
+            }
+        }
         if(match(TokenType.RETURN)) return returnStatement();
         if(match(TokenType.IF)) return ifStatement();
         if(match(TokenType.FOR)) return forStatement();

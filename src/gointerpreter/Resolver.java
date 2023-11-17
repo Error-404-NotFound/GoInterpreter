@@ -166,9 +166,11 @@ public class Resolver implements Expression.Visitor<Void>, Statement.Visitor<Voi
     }
 
     public Void visitInitializerStatement(Statement.Initializer statement) {
+        declare(statement.name);
         if (statement.initializer != null) {
             resolve(statement.initializer);
         }
+        define(statement.name);
         return null;
     }
 
@@ -229,7 +231,7 @@ public class Resolver implements Expression.Visitor<Void>, Statement.Visitor<Voi
         return null;
     }
 
-    public Void visitLiteralExpression(Expression.Literal expression) {
+    public Void visitLiteralExpression(Expression.Literal expression)  {
         return null;
     }
 

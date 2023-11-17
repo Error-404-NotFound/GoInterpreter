@@ -11,6 +11,7 @@ abstract class Statement {
         R visitClassStatement(Class statement);
         R visitExpressionStatement(ExpressionStmt statement);
         R visitIfStatement(If statement);
+//        R visitSwitchStatement(Switch statement);
         R visitPrintStatement(Print statement);
         R visitReturnStatement(Return statement);
         R visitVarStatement(Var statement);
