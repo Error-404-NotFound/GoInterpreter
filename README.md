@@ -1,26 +1,35 @@
 
- # ${\color{lightblue}GoInterpreter}$
+ # ${\color{rgb(0,200,100)}GoInterpreter}$
 
-This repo is a project of Interpreter of Golang made in Java
+## ${\color{lightblue}About}$
+This repo is a project of Interpreter of Golang made in Java.
+
+⚠️ Note: This interpreter is complete for the purpose of evaluation but it still needs a lot of changes to be made on and can be made more dynamic. We are open to resolve the issues raised. 
 
 ## ${\color{lightblue}Versions}$
-This repository has two branches representing the two versions of interpreter , Version 1 with the basic implementatons with minimal code and Version 2 with the advanced features and more organised notions in code
+This repository has two branches representing the two versions of interpreter made by the team. Version 1 with the advanced features and more organised notions in code can be found in main branch and Version 2 with the basic implementatons with minimal code can be found in main2 branch.
+
+All the test file and output corresponds to Version 1 and must be run for Version 1 only.
+
 ## ${\color{lightblue}Authors}$
+
+[![](https://contrib.rocks/image?repo=Error-404-NotFound/GoInterpreter)](https://github.com/Error-404-NotFound/GoInterpreter/graphs/contributors)
 
 - [Johri Aniket Manish](https://github.com/Error-404-NotFound)
 - [Aakarsh Bansal](https://github.com/aakarsh1012bansal)
+- [Viramgama Jaimin Piyush](https://github.com/i-apex)
 - [Siddhant Chatse Madhukar](https://github.com/sid1309)
 - [Harshit Garg](https://github.com/harshit2414)
 
-## ${\color{lightblue}Required Dependencies}$
+## ${\color{lightblue}Required \space Dependencies}$
 
-To run this project, a system should have JDK(Java Development Kit ) and JVM(Java Virtual Machine) to execute the source files.
+To run this project, the system should have JDK(Java Development Kit ) and JVM(Java Virtual Machine) to execute the source files.
 
 
 
 
 ## ${\color{lightblue}Usage/Examples}$
-Test Examples:  
+Input Example():  
 ```javascript
 import Component from 'my-project'
 
@@ -77,7 +86,7 @@ Through the process,a deeper understanding of parsing, lexical analysis, and lan
 - Siddhant:
 - Harshit:
 
-## ${\color{lightblue}Functions Implemented}$
+## ${\color{lightblue}Functions \space Implemented}$
 - Assingment/Declaration of variables
 - BODMAS rule of computing
 - Control Statements
