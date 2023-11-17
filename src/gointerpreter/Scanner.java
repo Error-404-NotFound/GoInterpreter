@@ -40,6 +40,7 @@ public class Scanner {
         keywords.put("package",PACKAGE);
         keywords.put("import", IMPORT);
         keywords.put("main()",   MAIN);
+        keywords.put("main",    PACKAGE_MAIN);
         keywords.put("func",   FUNC);
         keywords.put("fmt",    FMT);
     }

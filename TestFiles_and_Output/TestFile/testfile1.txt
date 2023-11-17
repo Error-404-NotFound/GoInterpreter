@@ -1,10 +1,12 @@
-import "fmt"
+package main
+import ("fmt")
 
 func main() {
-	var x
-	var y=10
-	for x=15;x>=y;x=x-1 {
-		fmt.Println(x)
+	var x = 5
+	var i
+	var answer=1
+	for i=1;i<=x;i=i+1 {
+		answer = answer*i
 	}
-	fmt.Println(3/0)
+	fmt.Println(answer)
 }

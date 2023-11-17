@@ -16,16 +16,35 @@ public class Parser {
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
-        if(this.tokens.size()>=1 && this.tokens.get(0).tokenType==TokenType.IMPORT) {
-            if(this.tokens.size()>=2 && this.tokens.get(1).tokenType==TokenType.STRING && this.tokens.get(1).literal.equals("fmt")) {
-                isImport=true;
-                this.tokens.remove(0);
-                this.tokens.remove(0);
+        if(this.tokens.get(0).tokenType==TokenType.PACKAGE && this.tokens.get(1).tokenType==TokenType.PACKAGE_MAIN) {
+            if(this.tokens.get(2).tokenType==TokenType.IMPORT) {
+                if(this.tokens.get(3).tokenType==TokenType.LEFT_PAREN && this.tokens.get(4).tokenType==TokenType.STRING && this.tokens.get(4).literal.equals("fmt")) {
+                    isImport=true;
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                }
+                else {
+                    Main.error(this.tokens.get(4), "Expected import (\"fmt\")");
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                }
             }
             else {
-                Main.error(this.tokens.get(0), "Expected import \"fmt\"");
-                this.tokens.remove(0);
-                this.tokens.remove(0);
+                Main.error(this.tokens.get(2), "Expected \"import\"");
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                    current++;
+                    current++;
             }
         }
         for(int i=0;i<this.tokens.size();i++) {
@@ -88,12 +107,21 @@ public class Parser {
             if(match(TokenType.VAR)) return varDeclaration();
 //            if(match(TokenType.FUNC)) return function("function");
             if(match(TokenType.CLASS)) return classDeclaration();
-            if(match(TokenType.IDENTIFIER)) return initializerDeclaration();
+            // if(match(TokenType.IDENTIFIER)) return initializerDeclaration();
             if(isMain && current>=pos_main) {
                 return statement();
             }
             else {
                 Main.error(peek(), "Expected \"func\" or \"var\" or \"class\" or \"identifier\" Cannot code outside the main function.");
+                // System.out.println(this.tokens.get(0));
+                // System.out.println(this.tokens.get(1));
+                // System.out.println(this.tokens.get(2));
+                // System.out.println(this.tokens.get(3));
+                // System.out.println(this.tokens.get(4));
+                // System.out.println(this.tokens.get(5));
+                // System.out.println(this.tokens.get(6));
+                // System.out.println(this.tokens.get(7));
+                // System.out.println(current);
                 synchronize();
                 return null;
             }
@@ -154,16 +182,6 @@ public class Parser {
         }
 //        consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
         return new Statement.Var(name, initializer);
-    }
-
-    private Statement initializerDeclaration() {
-        Token name = consume(TokenType.IDENTIFIER, "Expect variable name.");
-        Expression initializer=null;
-        if(match(TokenType.COLON_EQUAL)) {
-            initializer = expression();
-        }
-//        consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
-        return new Statement.Initializer(name, initializer);
     }
 
     private Statement statement() {
