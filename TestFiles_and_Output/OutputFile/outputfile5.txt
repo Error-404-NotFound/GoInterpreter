@@ -1,0 +1,26 @@
+Performing BODMAS operations inside a for loop:
+Iteration :
+1
+Result :
+90
+Result is Positive
+Iteration :
+2
+Result :
+105
+Result is Positive
+Iteration :
+3
+Result :
+120
+Result is Positive
+Iteration :
+4
+Result :
+135
+Result is Positive
+Iteration :
+5
+Result :
+150
+Result is Positive

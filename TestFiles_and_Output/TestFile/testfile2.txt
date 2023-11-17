@@ -1,0 +1,9 @@
+package main
+import ("fmt")
+
+func main() {
+	var x = 3
+	var y=5
+	var z=(x*y)+y*6-x/2*(9/(4-x))
+	fmt.Println(z)
+}

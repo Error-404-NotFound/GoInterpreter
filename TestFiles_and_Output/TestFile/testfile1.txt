@@ -7,6 +7,6 @@ func main() {
 	var answer=1
 	for i=1;i<=x;i=i+1 {
 		answer = answer*i
+		fmt.Println(answer)
 	}
-	fmt.Println(answer)
 }
