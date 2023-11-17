@@ -6,6 +6,8 @@ This repo is a project of Interpreter of Golang made in Java.
 
 ⚠️ Note: This interpreter is complete for the purpose of evaluation but it still needs a lot of changes to be made on and can be made more dynamic. We are open to resolve the issues raised. 
 
+Github Link for the repo: https://github.com/Error-404-NotFound/GoInterpreter
+
 ## ${\color{lightblue}Versions}$
 This repository has two branches representing the two versions of interpreter made by the team. Version 1 with the advanced features and more organised notions in code can be found in main branch and Version 2 with the basic implementatons with minimal code can be found in main2 branch.
 
