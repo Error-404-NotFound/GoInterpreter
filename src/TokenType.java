@@ -1,13 +1,33 @@
-
-
 // Token types
 enum TokenType {
-    INTEGER,
+    IMPORT,
+    PACKAGE,
+    MAIN,
+    DOUBLE_quote,
+    FUNC,
+    FMT,
+    IDENTIFIER,
+    ASSIGN,
+    INT,
     PLUS,
     MINUS,
-    MULTIPLICATION,
-    DIVISION,
-//    L_PAREN,
-//    R_PAREN;
-    EOF
+    MUL,
+    DIV,
+    LPAREN,
+    RPAREN,
+    SEMICOLON,
+    PRINTLN,
+    IF,
+    ELSE,
+    ELSEIF,
+    LT,
+    LTE,
+    GT,
+    GTE,
+    EQ,
+    NEQ,
+    LBRACE,
+    RBRACE,
+    FOR,
+    EOF,
 }

@@ -20,51 +20,89 @@ class Lexer {
         }
     }
 
+    public int getPos() {
+        return pos;
+    }
+
+    public Token setPos(int newPos) {
+        if (newPos >= 0 && newPos < text.length()) {
+            pos = newPos;
+            currentChar = text.charAt(pos);
+            Token token = getNextToken();
+            return token;
+        } else {
+            throw new RuntimeException("Invalid position");
+        }
+    }
+
     public Token getNextToken() {
         while (currentChar != '\0') {
-            if (Character.isDigit(currentChar)) {
-                int num = Integer.parseInt(String.valueOf(currentChar));
-                if(pos+1<text.length() && Character.isDigit(text.charAt(pos+1))) {
-                    int iterable_pos = pos;
-                    int num_digits = 0;
-                    num=0;
-                    while(iterable_pos<text.length() && Character.isDigit(text.charAt(iterable_pos))) {
-                        iterable_pos++;
-                        num_digits++;
-                    }
-                    for(int i=num_digits-1;i>=0;i--) {
-                        num += Integer.parseInt(String.valueOf(text.charAt(pos)))*(int)Math.pow(10, i);
-                        pos++;
-                    }
-                    pos--;
-                }
-                Token token = new Token(TokenType.INTEGER, String.valueOf(num));
-                advance();
-                return token;
+            if (Character.isLetter(currentChar) || currentChar == '_') {
+                return identifier();
+            } else if (Character.isDigit(currentChar)) {
+                return integer();
             } else if (currentChar == '+') {
-                Token token = new Token(TokenType.PLUS, "+");
                 advance();
-                return token;
+                return new Token(TokenType.PLUS, "+");
             } else if (currentChar == '-') {
-                Token token = new Token(TokenType.MINUS, "-");
                 advance();
-                return token;
+                return new Token(TokenType.MINUS, "-");
             } else if (currentChar == '*') {
-                Token token = new Token(TokenType.MULTIPLICATION, "*");
                 advance();
-                return token;
+                return new Token(TokenType.MUL, "*");
             } else if (currentChar == '/') {
-                Token token = new Token(TokenType.DIVISION, "/");
                 advance();
-                return token;
-//            } else if (currentChar == '(') {
-//                Token token = new Token(TokenType.L_PAREN, "(");
-//                advance();
-//                return token;
-//            } else if (currentChar == ')') {
-//                Token token = new Token(TokenType.R_PAREN, ")");
-//                advance();
-//                return token;
+                return new Token(TokenType.DIV, "/");
+            } else if (currentChar == '(') {
+                advance();
+                return new Token(TokenType.LPAREN, "(");
+            } else if (currentChar == ')') {
+                advance();
+                return new Token(TokenType.RPAREN, ")");
+            } else if (currentChar == '{') {
+                advance();
+                return new Token(TokenType.LBRACE, "{");
+            } else if (currentChar == '}') {
+                advance();
+                return new Token(TokenType.RBRACE, "}");
+            } else if (currentChar == '\"') {
+                advance();
+                return new Token(TokenType.DOUBLE_quote, "\"");
+            }  else if (currentChar == '<') {
+                advance();
+                if (currentChar == '=') {
+                    advance();
+                    return new Token(TokenType.LTE, "<=");
+                } else {
+                    return new Token(TokenType.LT, "<");
+                }
+            } else if (currentChar == '>') {
+                advance();
+                if (currentChar == '=') {
+                    advance();
+                    return new Token(TokenType.GTE, ">=");
+                } else {
+                    return new Token(TokenType.GT, ">");
+                }
+            } else if (currentChar == '=') {
+                advance();
+                if (currentChar == '=') {
+                    advance();
+                    return new Token(TokenType.EQ, "==");
+                } else {
+                    return new Token(TokenType.ASSIGN, "=");
+                }
+            } else if (currentChar == '!') {
+                advance();
+                if (currentChar == '=') {
+                    advance();
+                    return new Token(TokenType.NEQ, "!=");
+                } else {
+                    throw new RuntimeException("Invalid character");
+                }
+            } else if (currentChar == ';') {
+                advance();
+                return new Token(TokenType.SEMICOLON, ";");
             } else {
                 // Ignore whitespace
                 if (Character.isWhitespace(currentChar)) {
@@ -75,5 +113,52 @@ class Lexer {
             }
         }
         return new Token(TokenType.EOF, null);
+    }
+
+    private char peek() {
+        int peekPos = pos + 1;
+        return peekPos < text.length() ? text.charAt(peekPos) : '\0';
+    }
+    private Token identifier() {
+        StringBuilder result = new StringBuilder();
+        while (currentChar != '\0' && (Character.isLetterOrDigit(currentChar) || currentChar == '_' || currentChar == '.')) {
+            result.append(currentChar);
+            advance();
+        }
+        String identifier = result.toString();
+        switch (identifier) {
+            case "if":
+                return new Token(TokenType.IF, identifier);
+            case "else":
+                return new Token(TokenType.ELSE, identifier);
+            case "elseif":
+                return new Token(TokenType.ELSEIF, identifier);
+            case "fmt.Println":
+                return new Token(TokenType.PRINTLN, identifier);
+            case "fmt":
+                return new Token(TokenType.FMT, identifier);
+            case "for":
+                return new Token(TokenType.FOR, identifier);
+            case "import":
+                return new Token(TokenType.IMPORT, identifier);
+            case "main":
+                return new Token(TokenType.MAIN, identifier);
+            case "package":
+                return new Token(TokenType.PACKAGE, identifier);
+            case "func":
+                return new Token(TokenType.FUNC, identifier);
+            default:
+                return new Token(TokenType.IDENTIFIER, identifier);
+        }
+
+    }
+
+    private Token integer() {
+        StringBuilder result = new StringBuilder();
+        while (currentChar != '\0' && Character.isDigit(currentChar)) {
+            result.append(currentChar);
+            advance();
+        }
+        return new Token(TokenType.INT, result.toString());
     }
 }
